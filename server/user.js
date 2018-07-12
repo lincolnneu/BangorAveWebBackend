@@ -34,12 +34,17 @@ Router.post('/register',function(req, res){
         if(doc){
             return res.json({code:1, msg:'username already exists!'});
         }
-        User.create({user,password:md5Pwd(password),status},function(e,d){
+
+        const userModel = new User({user,password:md5Pwd(password),status});
+        // Since create cannot get user id, we switch to save.
+        userModel.save(function(e,d){
             if(e){
                 return res.json({code:1, msg:'sth wrong in backend..'});
             }
-            return res.json({code:0});
-        })
+            const {user, status, _id} = d;
+            res.cookie('userId', _id); // write cookie
+            return res.json({code:0, data:{user, status, _id}});
+        });
     });
 });
 

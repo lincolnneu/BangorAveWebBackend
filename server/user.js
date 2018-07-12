@@ -1,4 +1,6 @@
 const express = require('express');
+const utils = require('utility');
+
 const Router = express.Router();
 const models = require('./model');
 const User = models.getModel('user');
@@ -18,7 +20,7 @@ Router.post('/register',function(req, res){
         if(doc){
             return res.json({code:1, msg:'username already exists!'});
         }
-        User.create({user,password,status},function(e,d){
+        User.create({user,password:utils.md5(password),status},function(e,d){
             if(e){
                 return res.json({code:1, msg:'sth wrong in backend..'});
             }

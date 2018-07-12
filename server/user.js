@@ -20,7 +20,7 @@ Router.post('/register',function(req, res){
         if(doc){
             return res.json({code:1, msg:'username already exists!'});
         }
-        User.create({user,password:utils.md5(password),status},function(e,d){
+        User.create({user,password:md5Pwd(password),status},function(e,d){
             if(e){
                 return res.json({code:1, msg:'sth wrong in backend..'});
             }
@@ -28,6 +28,11 @@ Router.post('/register',function(req, res){
         })
     });
 });
+
+function md5Pwd(pwd){
+    const salt = 'cs5610_team6_938$%#%@*/-+`~';
+    return utils.md5(utils.md5(pwd+salt));
+}
 
 
 Router.get('/info', function(req,res){

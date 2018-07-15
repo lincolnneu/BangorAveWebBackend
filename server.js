@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 
 
-const userRouter = require('./user');
+const userRouter = require('./server/user');
 
 // create app
 const app = express();

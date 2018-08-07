@@ -9,6 +9,8 @@ const userRouter = require('./server/user');
 // create app
 const app = express();
 
+app.use(cookieParser());
+
 
 app.use(function(req, res, next){
     res.header("Access-Control-Allow-Origin",FRONTEND_URL); // we accept response from 4200
@@ -18,8 +20,6 @@ app.use(function(req, res, next){
     next(); // if successful, pass it through
 });
 
-
-app.use(cookieParser());
 app.use(bodyParser.json()); // to parse the json from post
 
 // start a middleware

@@ -4,10 +4,24 @@ const cookieParser = require('cookie-parser');
 const FRONTEND_URL = 'http://localhost:3000';
 
 
+
 const userRouter = require('./server/user');
 
 // create app
 const app = express();
+
+//work with express
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
+
+io.on('connection', function (socket) {
+
+    socket.on('sendmsg', function (data) {
+        console.log(data);
+        io.emit('receiveMessage', data);
+    })
+});
+
 
 app.use(cookieParser());
 
@@ -25,6 +39,6 @@ app.use(bodyParser.json()); // to parse the json from post
 // start a middleware
 app.use('/user',userRouter);
 
-app.listen(9093,function(){
+server.listen(9093,function(){
     console.log('Node app start at port 9093');
 });

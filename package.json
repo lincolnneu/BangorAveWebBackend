@@ -17,6 +17,10 @@
     "cookie-parser": "^1.4.3",
     "express": "^4.16.3",
     "mongoose": "^5.2.3",
+    "mongoose-extend-schema": "^1.0.0",
+    "passport-google-oauth20": "^1.0.0",
+    "socket.io": "^2.1.1",
+    "socket.io-client": "^2.1.1",
     "utility": "^1.14.0"
   }
 }

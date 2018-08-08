@@ -4,6 +4,7 @@ const utils = require('utility');
 const Router = express.Router();
 const models = require('./model');
 const User = models.getModel('user');
+const Chat = models.getModel('chat');
 const _filter = {'password':0, '__v':0}; // mask out password and version when send back data to client.
 
 // user list for debug
@@ -100,5 +101,23 @@ Router.get('/info', function(req,res){
 
     // code 0 represents success. 1 represents fail
 });
+
+//----------------------------------chat--------------------------------------------------------------------
+
+Router.get('/getmsglist', function (req, res) {
+    const user = req.cookies.user;
+    //{'$or': [{from: user, to:user}]}
+    Chat.find({}, function (err, doc) {
+        if(!err) {
+            return res.json({code: 0, msgs: doc})
+        }
+    })
+});
+
+
+
+//----------------------------------chat--------------------------------------------------------------------
+
+
 
 module.exports = Router;

@@ -31,6 +31,7 @@ const models = {
         'posDesc':{'type':String}
     },
     chat:{
+        // tow users' id's combination -> ensure that every chat room is unique
         'chatid': {'type': String, 'require': true},
         'from': {'type': String, 'require': true},
         'to': {'type': String, 'require': true},

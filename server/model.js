@@ -27,7 +27,8 @@ const models = {
         'title':{'type':String},
         // if you are hr, two more:
         'company':{'type':String},
-        'money':{'type':String}
+        'money':{'type':String},
+        'posDesc':{'type':String}
     },
     chat:{}
 

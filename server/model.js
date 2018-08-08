@@ -30,9 +30,17 @@ const models = {
         'money':{'type':String},
         'posDesc':{'type':String}
     },
-    chat:{}
+    chat:{
+        // tow users' id's combination -> ensure that every chat room is unique
+        'chatid': {'type': String, 'require': true},
+        'from': {'type': String, 'require': true},
+        'to': {'type': String, 'require': true},
+        'read': {'type': Boolean, 'require': false},
+        'content': {'type': String, 'require': true, 'default': ''},
+        'create-time': {'type': Number, 'default': new Date().getTime()}
+    }
 
-}
+};
 
 // register key name in mongodb
 for(let m in models){

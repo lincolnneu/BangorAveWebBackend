@@ -30,8 +30,10 @@ Router.post('/updateProfile',function(req, res){
     User.findByIdAndUpdate(userId, body, function(err,doc){
         const data = Object.assign({},{
             user: doc.user,
-            type: doc.type
+            status: doc.status
         }, body); // combine body data into data. ... needs es6.
+        console.log(doc);
+        console.log(data);
         return res.json({code: 0, data});
     });
 

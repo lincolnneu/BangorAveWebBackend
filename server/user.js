@@ -9,9 +9,12 @@ const _filter = {'password':0, '__v':0}; // mask out password and version when s
 
 // user list for debug
 Router.get('/list',function (req, res) {
+    // const type  = req.query.type;
+    const { status } = req.query;
+
     // User.remove({},function(e,d){}); // remove all user data
-    User.find({}, function(err,doc){
-        return res.json(doc);
+    User.find({status}, function(err,doc){
+        return res.json({code:0, data:doc});
     });
 });
 

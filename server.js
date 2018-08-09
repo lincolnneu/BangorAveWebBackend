@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const FRONTEND_URL = 'http://localhost:3000';
-const models = require('./server/model');
+const models = require('./models/user/user.schema.server');
 const User = models.getModel('user');
 const Chat = models.getModel('chat');
 const mongoose = require('mongoose');
@@ -23,7 +23,7 @@ mongoose.connection.on('connected', function(){
     console.log('mongo connect success');
 });// tell us if the connection is successful.
 
-const userRouter = require('./server/user');
+const userRouter = require('./services/user.service.server');
 
 // create app
 const app = express();

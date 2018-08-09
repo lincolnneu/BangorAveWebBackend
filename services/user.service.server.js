@@ -2,8 +2,8 @@ const express = require('express');
 const utils = require('utility');
 
 const Router = express.Router();
-const models = require('./model');
-const User = models.getModel('user');
+const models = require('../models/user/user.schema.server');
+const UserServiceServer = models.getModel('user');
 const Chat = models.getModel('chat');
 const _filter = {'password':0, '__v':0}; // mask out password and version when send back data to client.
 
@@ -13,7 +13,7 @@ Router.get('/list',function (req, res) {
     const { status } = req.query;
 
     // User.remove({},function(e,d){}); // remove all user data
-    User.find({status}, function(err,doc){
+    UserServiceServer.find({status}, function(err, doc){
         return res.json({code:0, data:doc});
     });
 });
@@ -31,7 +31,7 @@ Router.post('/updateProfile',function(req, res){
     const body = req.body;
     // check if the id exists and then update
     // This is a mongoose function. params are user id, data to change, function
-    User.findByIdAndUpdate(userId, body, function(err,doc){
+    UserServiceServer.findByIdAndUpdate(userId, body, function(err, doc){
         const data = Object.assign({},{
             user: doc.user,
             status: doc.status
@@ -47,7 +47,7 @@ Router.post('/updateProfile',function(req, res){
 Router.post('/login', function(req, res){
     const {user, password} = req.body;
     // findOne(search condition, display condition, callback) 0 means does not display.
-    User.findOne({user, password:md5Pwd(password)},_filter, function(err, doc){
+    UserServiceServer.findOne({user, password:md5Pwd(password)},_filter, function(err, doc){
         if(!doc){
             return res.json({code:1, msg:'username does not exist or password is wrong.'});
         }
@@ -61,12 +61,12 @@ Router.post('/login', function(req, res){
 Router.post('/register',function(req, res){
     console.log(req.body);
     const {user, password, status} = req.body;
-    User.findOne({user:user},function(err,doc){
+    UserServiceServer.findOne({user:user},function(err, doc){
         if(doc){
             return res.json({code:1, msg:'username already exists!'});
         }
 
-        const userModel = new User({user,password:md5Pwd(password),status});
+        const userModel = new UserServiceServer({user,password:md5Pwd(password),status});
         // Since create cannot get user id, we switch to save.
         userModel.save(function(e,d){
             if(e){
@@ -92,7 +92,7 @@ Router.get('/info', function(req,res){
         console.log('user is not loggedin');
        return res.json({code:1});
    }
-    User.findOne({_id:userId}, _filter, function(err, doc){
+    UserServiceServer.findOne({_id:userId}, _filter, function(err, doc){
         if(err){
             return res.json({code:1, msg:"sth wrong with backend"});
         }

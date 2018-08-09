@@ -11,12 +11,20 @@ const _filter = {'password':0, '__v':0}; // mask out password and version when s
 Router.get('/list',function (req, res) {
     // const type  = req.query.type;
     const { status } = req.query;
+    // console.log(status);
+    if(status === 'admin'){
+        UserModel.findAllUsers()
+            .then(function(doc){
+                return res.json({code:0, data: doc});
+            });
+    } else {
+        // User.remove({},function(e,d){}); // remove all user data
+        UserModel.findUsersByStatus({status})
+            .then(function(doc){
+                return res.json({code:0, data:doc});
+            })
 
-    // User.remove({},function(e,d){}); // remove all user data
-    UserModel.findUsersByStatus({status})
-        .then(function(doc){
-            return res.json({code:0, data:doc});
-        })
+    }
 });
 
 Router.post('/updateProfile',function(req, res){

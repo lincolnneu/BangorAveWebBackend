@@ -6,6 +6,10 @@ function findUsersByStatus({status}){
     return UserModel.find({status});
 }
 
+function findAllUsers(){
+    return UserModel.find();
+}
+
 function findUserByIdAndUpdate(userId, body){
     return UserModel.findByIdAndUpdate(userId, body);
 }
@@ -41,6 +45,7 @@ var api = {
     findUserByIdAndUpdate: findUserByIdAndUpdate,
     findUserByCredentials: findUserByCredentials,
     findUserByUsername:findUserByUsername,
+    findAllUsers: findAllUsers,
     createUser: createUser,
     findUserById: findUserById
 }

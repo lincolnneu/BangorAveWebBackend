@@ -1,20 +1,4 @@
-const mongoose = require('mongoose');
-// connect to mongo using set team6
-
-
-let DB_URL = 'mongodb://127.0.0.1:27017/team6'; // for local
-if(process.env.MLAB_USERNAME_WEBDEV) { // check if running remotely
-    var username = process.env.MLAB_USERNAME_WEBDEV; // get from environment
-    var password = process.env.MLAB_PASSWORD_WEBDEV;
-    DB_URL = 'mongodb://' + username + ':' + password;
-    DB_URL += '@ds237641.mlab.com:37641/heroku_bq69054b'; // user yours
-}
-
-
-mongoose.connect(DB_URL);
-mongoose.connection.on('connected', function(){
-    console.log('mongo connect success');
-});// tell us if the connection is successful.
+var mongoose = require('mongoose');
 
 const models = {
     user:{

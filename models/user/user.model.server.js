@@ -1,6 +1,7 @@
 const userSchema = require('./user.schema.server');
 const utils = require('utility');
 const UserModel = userSchema.getModel('user');
+const ChatModel = userSchema.getModel('chat');
 
 function findUsersByStatus({status}){
     return UserModel.find({status});
@@ -40,6 +41,15 @@ function findUserById({_id:userId}, _filter){
     return UserModel.findOne({_id:userId}, _filter);
 }
 
+function findAllUsers() {
+    return UserModel.find({});
+}
+
+function findAllChats(filter) {
+    console.log(filter);
+    return ChatModel.find(filter);
+}
+
 var api = {
     findUsersByStatus: findUsersByStatus,
     findUserByIdAndUpdate: findUserByIdAndUpdate,
@@ -47,7 +57,9 @@ var api = {
     findUserByUsername:findUserByUsername,
     findAllUsers: findAllUsers,
     createUser: createUser,
-    findUserById: findUserById
+    findUserById: findUserById,
+    findAllUsers: findAllUsers,
+    findAllChats: findAllChats
 }
 
 module.exports = api;

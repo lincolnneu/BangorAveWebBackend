@@ -12,9 +12,15 @@ function findCompanyByName(companyName) {
     return companyModel.findOne({companyName: companyName});
 }
 
-// function findAllUsers() {
-//   return userModel.find();
-// }
+function findAllCompany() {
+    return companyModel.find({});
+}
+
+function updateCompany(company) {
+    const companyName = company.companyName;
+    return companyModel.findOneAndUpdate({companyName: companyName}, {$set: company})
+}
+
 
 // function updateUser(user) {
 //     return userModel.update({username: user.username},
@@ -32,7 +38,9 @@ function findCompanyByName(companyName) {
 
 const api = {
     createCompany: createCompany,
-    findCompanyByName: findCompanyByName
+    findCompanyByName: findCompanyByName,
+    findAllCompany: findAllCompany,
+    updateCompany: updateCompany
 };
 
 module.exports = api;

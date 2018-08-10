@@ -138,6 +138,24 @@ Router.post('/createUser',function(req, res){
         });
 });
 
+
+Router.delete('/deleteUser',function(req, res){
+    // console.log(req.body);
+    const userId = req.body;
+
+    // console.log(userId);
+    // Since create cannot get user id, we switch to save.
+    return UserModel.findUserByIdAndDelete(userId.userId)
+        .then(function(d){
+            if(!d){
+                return res.json({code:1, msg:'sth wrong in backend..'});
+            }
+            return res.json({code:0, data:userId});
+        });
+
+});
+
+
 Router.get('/info', function(req,res){
     const {userId} = req.cookies;
     // without cookie?

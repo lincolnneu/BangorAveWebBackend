@@ -1,5 +1,5 @@
 const express = require('express');
-const utils = require('utility');
+// const utils = require('utility');
 
 const Router = express.Router();
 const userSchema = require('../models/user/user.schema.server');
@@ -13,10 +13,18 @@ Router.get('/list',function (req, res) {
     const { status } = req.query;
 
     // User.remove({},function(e,d){}); // remove all user data
-    UserModel.findUsersByStatus({status})
-        .then(function(doc){
-            return res.json({code:0, data:doc});
-        })
+    if(status === 'admin'){
+        UserModel.findAllUsers()
+            .then(function(doc){
+                return res.json({code:0, data: doc});
+            })
+    } else {
+        UserModel.findUsersByStatus({status})
+            .then(function(doc){
+                return res.json({code:0, data:doc});
+            })
+    }
+
 });
 
 Router.post('/updateProfile',function(req, res){
@@ -38,8 +46,8 @@ Router.post('/updateProfile',function(req, res){
                 user: doc.user,
                 status: doc.status
             }, body); // combine body data into data. ... needs es6.
-            console.log(doc);
-            console.log(data);
+            // console.log(doc);
+            // console.log(data);
             return res.json({code: 0, data});
         })
 })

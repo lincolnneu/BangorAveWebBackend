@@ -11,6 +11,10 @@ function findUserByIdAndUpdate(userId, body){
     return UserModel.findByIdAndUpdate(userId, body);
 }
 
+function findUserByIdAndDelete(userId){
+    return UserModel.findByIdAndDelete(userId);
+}
+
 function findUserByCredentials({user, password},_filter){
     // console.log({user, password:md5Pwd(password)});
     let result = UserModel.findOne({user, password:md5Pwd(password)},_filter);
@@ -51,6 +55,7 @@ var api = {
     findUserByIdAndUpdate: findUserByIdAndUpdate,
     findUserByCredentials: findUserByCredentials,
     findUserByUsername:findUserByUsername,
+    findUserByIdAndDelete:findUserByIdAndDelete,
     createUser: createUser,
     findUserById: findUserById,
     findAllUsers: findAllUsers,

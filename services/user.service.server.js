@@ -38,6 +38,27 @@ Router.post('/updateProfile',function(req, res){
         return json.dumps({code: 1})
     }
     const body = req.body;
+    // console.log(body);
+    // check if the id exists and then update
+    // This is a mongoose function. params are user id, data to change, function
+    UserModel.findUserByIdAndUpdate(userId, body)
+        .then(function(doc){
+            const data = Object.assign({},{
+                user: doc.user,
+                status: doc.status
+            }, body); // combine body data into data. ... needs es6.
+            // console.log(doc);
+            // console.log(data);
+            return res.json({code: 0, data});
+        })
+})
+
+Router.post('/updateUserFromAdmin',function(req, res){
+    const body = req.body;
+    const userId = body._id;
+    if(!userId){
+        return json.dumps({code: 1})
+    }
     // check if the id exists and then update
     // This is a mongoose function. params are user id, data to change, function
     UserModel.findUserByIdAndUpdate(userId, body)

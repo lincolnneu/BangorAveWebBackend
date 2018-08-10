@@ -109,13 +109,39 @@ Router.get('/info', function(req,res){
 //----------------------------------chat--------------------------------------------------------------------
 
 Router.get('/getmsglist', function (req, res) {
-    const user = req.cookies.user;
-    //{'$or': [{from: user, to:user}]}
-    Chat.find({}, function (err, doc) {
-        if(!err) {
-            return res.json({code: 0, msgs: doc})
+    const user = req.cookies.userId;
+    console.log(user);
+
+    UserModel.findAllUsers().then(
+        doc => {
+            let users = {};
+            doc.forEach(
+            v => {
+                users[v._id] = {name: v.user, avatar: v.avatar}
+            });
+            //{'$or': [{from: user, to: user}]}
+            UserModel
+                .findAllChats({'$or': [{from: user}, {to: user}]})
+                .then(
+                    msgs => {
+                        console.log(msgs);
+                        res.json({
+                            code: 0,
+                            msgs: msgs,
+                            users: users
+                        })
+                    }
+
+                )
         }
-    })
+    )
+
+    //{'$or': [{from: user, to:user}]}
+    // Chat.find({}, function (err, doc) {
+    //     if(!err) {
+    //         return res.json({code: 0, msgs: doc})
+    //     }
+    // })
 });
 
 

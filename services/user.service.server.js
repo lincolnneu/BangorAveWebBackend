@@ -13,10 +13,18 @@ Router.get('/list',function (req, res) {
     const { status } = req.query;
 
     // User.remove({},function(e,d){}); // remove all user data
-    UserModel.findUsersByStatus({status})
-        .then(function(doc){
-            return res.json({code:0, data:doc});
-        })
+    if(status === 'admin'){
+        UserModel.findAllUsers()
+            .then(function(doc){
+                return res.json({code:0, data: doc});
+            })
+    } else {
+        UserModel.findUsersByStatus({status})
+            .then(function(doc){
+                return res.json({code:0, data:doc});
+            })
+    }
+
 });
 
 Router.post('/updateProfile',function(req, res){

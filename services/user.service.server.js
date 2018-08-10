@@ -71,7 +71,7 @@ Router.post('/register',function(req, res){
     // console.log(req.body);
     const {user, password, status} = req.body;
     let avatar = null;
-    if(user === 'admin'){
+    if(user === 'admin' || req.body.avatar != null){
         avatar = req.body.avatar;
     }
     UserModel.findUserByUsername({user:user})
@@ -92,11 +92,30 @@ Router.post('/register',function(req, res){
         });
 });
 
-// function md5Pwd(pwd){
-//     const salt = 'cs5610_team6_938$%#%@*/-+`~';
-//     return utils.md5(utils.md5(pwd+salt));
-// }
-
+// create user directly from admin users list
+Router.post('/createUser',function(req, res){
+    // console.log(req.body);
+    const {user, password, status} = req.body;
+    let avatar = null;
+    if(user === 'admin' || req.body.avatar != null){
+        avatar = req.body.avatar;
+    }
+    return UserModel.findUserByUsername({user:user})
+        .then(function(doc){
+            if(doc){
+                return res.json({code:1, msg:'username already exists!'});
+            }
+            // Since create cannot get user id, we switch to save.
+            return UserModel.createUser(user, password,status,avatar)
+                .then(function(d){
+                    if(!d){
+                        return res.json({code:1, msg:'sth wrong in backend..'});
+                    }
+                    const {user, status, _id} = d;
+                    return res.json({code:0, data:{user, status, _id}});
+                });
+        });
+});
 
 Router.get('/info', function(req,res){
     const {userId} = req.cookies;

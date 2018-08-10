@@ -13,7 +13,7 @@ Router.get('/list',function (req, res) {
     const { status } = req.query;
 
     // User.remove({},function(e,d){}); // remove all user data
-    if(status === 'admin'){
+    if(status === 'admin' || status === 'representative'){
         UserModel.findAllUsers()
             .then(function(doc){
                 return res.json({code:0, data: doc});
@@ -92,7 +92,7 @@ Router.post('/register',function(req, res){
     // console.log(req.body);
     const {user, password, status} = req.body;
     let avatar = null;
-    if(user === 'admin' || req.body.avatar != null){
+    if(user === 'admin' || status === 'representative'){
         avatar = req.body.avatar;
     }
     UserModel.findUserByUsername({user:user})

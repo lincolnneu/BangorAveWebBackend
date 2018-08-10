@@ -30,8 +30,8 @@ function findUserByUsername({user:user}){
     return UserModel.findOne({user:user});
 }
 
-function createUser(user, password,status){
-        const userModel = new UserModel({user,password:md5Pwd(password),status});
+function createUser(user, password,status, avatar){
+        const userModel = new UserModel({user,password:md5Pwd(password),status, avatar});
         // Since create cannot get user id, we switch to save.
         return userModel.save();
 }

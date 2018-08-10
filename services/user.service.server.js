@@ -70,14 +70,18 @@ Router.post('/login', function(req, res){
 Router.post('/register',function(req, res){
     // console.log(req.body);
     const {user, password, status} = req.body;
-
+    let avatar = '';
+    if(user === 'admin'){
+        avatar = req.body.avatar;
+    }
     UserModel.findUserByUsername({user:user})
         .then(function(doc){
             if(doc){
                 return res.json({code:1, msg:'username already exists!'});
             }
             // Since create cannot get user id, we switch to save.
-            UserModel.createUser(user, password,status)
+
+            UserModel.createUser(user, password,status, avatar)
                 .then(function(d){
                     if(!d){
                         return res.json({code:1, msg:'sth wrong in backend..'});

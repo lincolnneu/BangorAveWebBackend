@@ -11,7 +11,7 @@ const _filter = {'password':0, '__v':0}; // mask out password and version when s
 Router.get('/list',function (req, res) {
     // const type  = req.query.type;
     const { status } = req.query;
-
+    // console.log(status);
     // User.remove({},function(e,d){}); // remove all user data
     if(status === 'admin' || status === 'representative'){
         UserModel.findAllUsers()
@@ -24,7 +24,6 @@ Router.get('/list',function (req, res) {
                 return res.json({code:0, data:doc});
             })
     }
-
 });
 
 Router.post('/updateProfile',function(req, res){

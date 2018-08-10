@@ -7,6 +7,10 @@ function findUsersByStatus({status}){
     return UserModel.find({status});
 }
 
+function findAllUsers(){
+    return UserModel.find();
+}
+
 function findUserByIdAndUpdate(userId, body){
     return UserModel.findByIdAndUpdate(userId, body);
 }
@@ -30,6 +34,7 @@ function md5Pwd(pwd){
 function findUserByUsername({user:user}){
     return UserModel.findOne({user:user});
 }
+
 
 function createUser(user, password,status,avatar){
         const userModel = new UserModel({user,password:md5Pwd(password),status,avatar});

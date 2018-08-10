@@ -65,6 +65,20 @@ app.use(bodyParser.json()); // to parse the json from post
 // start a middleware
 app.use('/user',userRouter);
 
+app.get('/', function (req, res) {
+    res.send('home');
+});
+
+
+
+
+//job
+require('./services/job.service.server')(app);
+//below just for job function test
+// require('./models/company/company.model.server').createCompany({companyName: "company 2"});
+// const companySchema = require('./models/company/company.schema.server');
+// mongoose.model('CompanyModel', companySchema);
+
 server.listen(9093,function(){
     console.log('Node app start at port 9093');
 });

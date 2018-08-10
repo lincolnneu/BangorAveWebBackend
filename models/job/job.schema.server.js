@@ -8,10 +8,10 @@ const jobSchema = mongoose.Schema({
     },
     hrId: String,
     location: String,
-    Description: String,
+    description: String,
     name: String,
     salary: String
 
-});
+}, {collection: 'jobs'});
 
 module.exports = jobSchema;

@@ -11,7 +11,7 @@ const _filter = {'password':0, '__v':0}; // mask out password and version when s
 Router.get('/list',function (req, res) {
     // const type  = req.query.type;
     const { status } = req.query;
-
+    // console.log(status);
     // User.remove({},function(e,d){}); // remove all user data
     if(status === 'admin' || status === 'representative'){
         UserModel.findAllUsers()
@@ -24,7 +24,6 @@ Router.get('/list',function (req, res) {
                 return res.json({code:0, data:doc});
             })
     }
-
 });
 
 Router.post('/updateProfile',function(req, res){
@@ -38,6 +37,27 @@ Router.post('/updateProfile',function(req, res){
         return json.dumps({code: 1})
     }
     const body = req.body;
+    // console.log(body);
+    // check if the id exists and then update
+    // This is a mongoose function. params are user id, data to change, function
+    UserModel.findUserByIdAndUpdate(userId, body)
+        .then(function(doc){
+            const data = Object.assign({},{
+                user: doc.user,
+                status: doc.status
+            }, body); // combine body data into data. ... needs es6.
+            // console.log(doc);
+            // console.log(data);
+            return res.json({code: 0, data});
+        })
+})
+
+Router.post('/updateUserFromAdmin',function(req, res){
+    const body = req.body;
+    const userId = body._id;
+    if(!userId){
+        return json.dumps({code: 1})
+    }
     // check if the id exists and then update
     // This is a mongoose function. params are user id, data to change, function
     UserModel.findUserByIdAndUpdate(userId, body)
@@ -92,10 +112,47 @@ Router.post('/register',function(req, res){
         });
 });
 
-// function md5Pwd(pwd){
-//     const salt = 'cs5610_team6_938$%#%@*/-+`~';
-//     return utils.md5(utils.md5(pwd+salt));
-// }
+// create user directly from admin users list
+Router.post('/createUser',function(req, res){
+    // console.log(req.body);
+    const {user, password, status} = req.body;
+    let avatar = null;
+    if(user === 'admin' || req.body.avatar != null){
+        avatar = req.body.avatar;
+    }
+    return UserModel.findUserByUsername({user:user})
+        .then(function(doc){
+            if(doc){
+                return res.json({code:1, msg:'username already exists!'});
+            }
+            // Since create cannot get user id, we switch to save.
+            return UserModel.createUser(user, password,status,avatar)
+                .then(function(d){
+                    if(!d){
+                        return res.json({code:1, msg:'sth wrong in backend..'});
+                    }
+                    const {user, status, _id} = d;
+                    return res.json({code:0, data:{user, status, _id}});
+                });
+        });
+});
+
+
+Router.delete('/deleteUser',function(req, res){
+    // console.log(req.body);
+    const userId = req.body;
+
+    // console.log(userId);
+    // Since create cannot get user id, we switch to save.
+    return UserModel.findUserByIdAndDelete(userId.userId)
+        .then(function(d){
+            if(!d){
+                return res.json({code:1, msg:'sth wrong in backend..'});
+            }
+            return res.json({code:0, data:userId});
+        });
+
+});
 
 
 Router.get('/info', function(req,res){

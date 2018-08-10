@@ -15,6 +15,10 @@ function findUserByIdAndUpdate(userId, body){
     return UserModel.findByIdAndUpdate(userId, body);
 }
 
+function findUserByIdAndDelete(userId){
+    return UserModel.findByIdAndDelete(userId);
+}
+
 function findUserByCredentials({user, password},_filter){
     // console.log({user, password:md5Pwd(password)});
     let result = UserModel.findOne({user, password:md5Pwd(password)},_filter);
@@ -31,8 +35,9 @@ function findUserByUsername({user:user}){
     return UserModel.findOne({user:user});
 }
 
-function createUser(user, password,status, avatar){
-        const userModel = new UserModel({user,password:md5Pwd(password),status, avatar});
+
+function createUser(user, password,status,avatar){
+        const userModel = new UserModel({user,password:md5Pwd(password),status,avatar});
         // Since create cannot get user id, we switch to save.
         return userModel.save();
 }
@@ -55,7 +60,7 @@ var api = {
     findUserByIdAndUpdate: findUserByIdAndUpdate,
     findUserByCredentials: findUserByCredentials,
     findUserByUsername:findUserByUsername,
-    findAllUsers: findAllUsers,
+    findUserByIdAndDelete:findUserByIdAndDelete,
     createUser: createUser,
     findUserById: findUserById,
     findAllUsers: findAllUsers,

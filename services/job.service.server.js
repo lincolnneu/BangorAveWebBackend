@@ -8,13 +8,12 @@ module.exports = function (app) {
     app.get('/api/job/company/:companyId', findJobsForCompany);
     app.get('/api/job/hr/:hrId', findJobsForHR);
 
-
-
     const jobModel = require('../models/job/job.model.server');
 
 
     function createJob(req, res) {
         const job = req.body;
+        // console.log(job);
         jobModel.createJob(job)
             .then(
                 () => res.json(job)

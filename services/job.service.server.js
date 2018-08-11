@@ -9,15 +9,27 @@ module.exports = function (app) {
     app.get('/api/job/hr/:hrId', findJobsForHR);
 
     const jobModel = require('../models/job/job.model.server');
-
+    const companyModel = require('../models/company/company.model.server');
 
     function createJob(req, res) {
         const job = req.body;
         // console.log(job);
-        jobModel.createJob(job)
+        const companyName = job.company;
+        companyModel.findCompanyByName(companyName)
             .then(
-                () => res.json(job)
-            )
+                company => {
+                    if(!company) {
+                        res.json({error: 'Company name does not exist'})
+                    } else {
+                        job.company = company._id;
+                        jobModel.createJob(job)
+                            .then(() => res.json(job))
+                    }
+
+                }
+            );
+        // console.log(job);
+
     }
 
     function findAllJobs(req, res) {
@@ -35,8 +47,15 @@ module.exports = function (app) {
 
     function updateJobById(req, res) {
         const job = req.body;
-        jobModel.updateJobById(job)
-            .then((job) => res.json(job));
+        companyModel.findCompanyByName(job.company)
+            .then(
+                company => {
+                    job.company = company._id;
+                    jobModel.updateJobById(job)
+                        .then((job) => res.json(job));
+                }
+            );
+
     }
 
     function findJobsForCompany(req, res) {

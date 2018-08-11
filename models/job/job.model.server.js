@@ -16,6 +16,7 @@ function deleteJobById(jobId) {
 }
 
 function updateJobById(job) {
+    // console.log(job);
     return jobModel.findOneAndUpdate({_id: job._id}, {$set: job})
 }
 

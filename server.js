@@ -72,7 +72,9 @@ app.get('/', function (req, res) {
 
 
 
-
+//friendship
+require('./services/friendship.service.server')(app);
+//job
 //job router
 require('./services/job.service.server')(app);
 //company router

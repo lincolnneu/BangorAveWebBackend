@@ -51,7 +51,7 @@ function findAllUsers() {
 }
 
 function findAllChats(filter) {
-    console.log(filter);
+    // console.log(filter);
     return ChatModel.find(filter);
 }
 

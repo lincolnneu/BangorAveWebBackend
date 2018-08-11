@@ -30,16 +30,16 @@ Router.get('/list',function (req, res) {
                     .then(friends=>{
                         // console.log(friends);
                         let friendsIds = friends.map(f=>(f._id));
-                        console.log(friendsIds);
+                        // console.log(friendsIds);
                         let data = doc.map(user=>{
                             // console.log(user._id);
                             let u = null;
                             friendsIds.forEach(id=>{
-                                console.log(id + " " + user._id);
+                                // console.log(id + " " + user._id);
                                 if(String(id) === String(user._id)){
                                     u = Object.assign({},{isFriend: true}, user._doc);
-                                    console.log('find it!');
-                                    console.log(u);
+                                    // console.log('find it!');
+                                    // console.log(u);
                                     return u;
                                 }
                             });

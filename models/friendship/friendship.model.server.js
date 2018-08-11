@@ -13,7 +13,7 @@ function makeFriendship(friendship){
 }
 
 function breakFriendship(friendship){
-    console.log(friendship);
+    // console.log(friendship);
     return friendshipModel.deleteOne(friendship);
 }
 

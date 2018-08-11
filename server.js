@@ -23,10 +23,13 @@ mongoose.connection.on('connected', function(){
     console.log('mongo connect success');
 });// tell us if the connection is successful.
 
+
 const userRouter = require('./services/user.service.server');
 
 // create app
 const app = express();
+app.use(bodyParser.json()); // to parse the json from post
+app.use(bodyParser.urlencoded({extended: true}));
 
 //work with express
 const server = require('http').Server(app);
@@ -60,8 +63,6 @@ app.use(function(req, res, next){
     next(); // if successful, pass it through
 });
 
-app.use(bodyParser.json()); // to parse the json from post
-
 // start a middleware
 app.use('/user',userRouter);
 
@@ -70,14 +71,15 @@ app.get('/', function (req, res) {
 });
 
 
+
 //friendship
 require('./services/friendship.service.server')(app);
 //job
+//job router
 require('./services/job.service.server')(app);
-//below just for job function test
-// require('./models/company/company.model.server').createCompany({companyName: "company 2"});
-// const companySchema = require('./models/company/company.schema.server');
-// mongoose.model('CompanyModel', companySchema);
+//company router
+require('./services/company.service.server')(app);
+
 
 server.listen(9093,function(){
     console.log('Node app start at port 9093');

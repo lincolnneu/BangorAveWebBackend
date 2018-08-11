@@ -1,22 +1,26 @@
-var mongoose = require('mongoose');
-var companySchema = require('./company.schema.server');
-var companyModel = mongoose.model('CompanyModel', companySchema)
+const mongoose = require('mongoose');
+const companySchema = require('./company.schema.server');
+const companyModel = mongoose.model('CompanyModel', companySchema);
 
-// function findUserByCredentials(credential) {
-//   return userModel.findOne(credential, {username: 1});
-// }  
-
-// function findUserById(userId) {
-//   return userModel.findById(userId);
-// }
 
 function createCompany(company) {
-  return companyModel.create(company);
+    return companyModel.create(company);
 }
 
-// function findAllUsers() {
-//   return userModel.find();
-// }
+function findCompanyByName(companyName) {
+    // console.log(company);
+    return companyModel.findOne({companyName: companyName});
+}
+
+function findAllCompany() {
+    return companyModel.find({});
+}
+
+function updateCompany(company) {
+    const companyName = company.companyName;
+    return companyModel.findOneAndUpdate({companyName: companyName}, {$set: company})
+}
+
 
 // function updateUser(user) {
 //     return userModel.update({username: user.username},
@@ -32,12 +36,11 @@ function createCompany(company) {
 //       });
 //   }
 
-var api = {
-  createCompany: createCompany
-//   findAllUsers: findAllUsers,
-//   findUserById: findUserById,
-//   findUserByCredentials: findUserByCredentials,
-//   updateUser: updateUser
+const api = {
+    createCompany: createCompany,
+    findCompanyByName: findCompanyByName,
+    findAllCompany: findAllCompany,
+    updateCompany: updateCompany
 };
 
 module.exports = api;

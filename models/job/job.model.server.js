@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 const jobSchema = require('./job.schema.server');
 const jobModel = mongoose.model('JobModel', jobSchema);
-
 function findAllJobs() {
     return jobModel.find({})
         .populate('company')
+        .exec();
 }
 
 function createJob(job) {
@@ -16,15 +16,20 @@ function deleteJobById(jobId) {
 }
 
 function updateJobById(job) {
+    // console.log(job);
     return jobModel.findOneAndUpdate({_id: job._id}, {$set: job})
 }
 
 function findJobsForCompany(companyId) {
-    return jobModel.find({company: companyId});
+    return jobModel.find({company: companyId})
+        .populate('company')
+        .exec();
 }
 
 function findJobsForHR(hrId) {
-    return jobModel.find({hrId: hrId});
+    return jobModel.find({hrId: hrId})
+        .populate('company')
+        .exec();
 }
 
 

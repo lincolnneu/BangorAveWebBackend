@@ -65,6 +65,6 @@ var api = {
     findUserById: findUserById,
     findAllUsers: findAllUsers,
     findAllChats: findAllChats
-}
+};
 
 module.exports = api;

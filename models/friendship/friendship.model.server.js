@@ -18,7 +18,9 @@ function breakFriendship(friendship){
 function findFriendshipsForUser(userId){
     // console.log(userId);
     return friendshipModel
-        .find({me: userId});
+        .find({me: userId})
+        .populate('friend')
+        .exec();
 }
 
 function checkDuplicate(friendship){

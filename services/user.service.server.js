@@ -178,7 +178,7 @@ Router.get('/info', function(req,res){
 
 Router.get('/getmsglist', function (req, res) {
     const user = req.cookies.userId;
-    console.log(user);
+    // console.log(user);
 
     UserModel.findAllUsers().then(
         doc => {
@@ -192,7 +192,7 @@ Router.get('/getmsglist', function (req, res) {
                 .findAllChats({'$or': [{from: user}, {to: user}]})
                 .then(
                     msgs => {
-                        console.log(msgs);
+                        // console.log(msgs);
                         res.json({
                             code: 0,
                             msgs: msgs,

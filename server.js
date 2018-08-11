@@ -70,8 +70,8 @@ app.get('/', function (req, res) {
 });
 
 
-
-
+//friendship
+require('./services/friendship.service.server')(app);
 //job
 require('./services/job.service.server')(app);
 //below just for job function test

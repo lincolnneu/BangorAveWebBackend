@@ -28,14 +28,10 @@ module.exports = function(app){
             return res.json({code:1});
         }
         friendshipModel
-            .findFriendshipsForUser(userId)
-            .then(function(friendships){
-                let friends = friendships.map(f=>{
-                    return f.friend;
-                });
+            .findFriendsForUser(userId)
+            .then(function(friends){
                 res.json({code:0, data:friends});
             });
-
     }
 
 
@@ -49,30 +45,33 @@ module.exports = function(app){
     }
 
     function makeFriendship(req, res){
-        const {userId} = req.cookies;
+        const userId = req.cookies.userId;
         if(!userId){
             console.log('user is not loggedin');
             return res.json({code:1});
         }
         const friendId = req.body.friendId;
         let friendship1 = {
-            me: userId.userId,
-            friendId: friendId
+            me: userId,
+            friend: friendId
         };
 
         let friendship2 = {
             me: friendId,
-            friendId: userId.userId
+            friend: userId
         };
         return friendshipModel
             .checkDuplicate(friendship1)
-            .then(res => {
-                if(res === 0){
+            .then(result => {
+                if(result === 0){
                     return friendshipModel
                         .makeFriendship(friendship1)
                         .then(()=>{
                             return friendshipModel
-                                .makeFriendship(friendship2);
+                                .makeFriendship(friendship2)
+                                .then((friendship)=>{
+                                    return res.json(friendship);
+                                });
                         })
                 } else {
                     res.sendStatus(403);
@@ -82,20 +81,20 @@ module.exports = function(app){
 
 
     function breakFriendship(req, res){
-        const {userId} = req.cookies;
+        const userId = req.cookies.userId;
         if(!userId){
             console.log('user is not loggedin');
             return res.json({code:1});
         }
         const friendId = req.body.friendId;
         let friendship1 = {
-            me: userId.userId,
-            friendId: friendId
+            me: userId,
+            friend: friendId
         };
 
         let friendship2 = {
             me: friendId,
-            friendId: userId.userId
+            friend: userId
         };
         return friendshipModel
             .breakFriendship(friendship1)

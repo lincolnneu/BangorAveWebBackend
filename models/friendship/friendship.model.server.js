@@ -8,10 +8,12 @@ const friendshipSchema = require('./friendship.schema.server');
 const friendshipModel = mongoose.model('FriendshipModel', friendshipSchema);
 
 function makeFriendship(friendship){
+    // console.log(friendship);
     return friendshipModel.create(friendship);
 }
 
 function breakFriendship(friendship){
+    console.log(friendship);
     return friendshipModel.deleteOne(friendship);
 }
 
@@ -21,6 +23,20 @@ function findFriendshipsForUser(userId){
         .find({me: userId})
         .populate('friend')
         .exec();
+}
+
+function findFriendsForUser(userId){
+    return friendshipModel
+        .find({me: userId})
+        .populate('friend')
+        .exec()
+        .then(function(friendships){
+            let friends = friendships.map(f=>{
+                return f.friend;
+            });
+            return friends;
+        });
+
 }
 
 function checkDuplicate(friendship){
@@ -48,6 +64,7 @@ api = {
     makeFriendship: makeFriendship,
     breakFriendship: breakFriendship,
     findFriendshipsForUser: findFriendshipsForUser,
+    findFriendsForUser: findFriendsForUser,
     checkDuplicate: checkDuplicate
 };
 

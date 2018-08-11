@@ -6,9 +6,14 @@ const userSchema = require('../models/user/user.schema.server');
 const UserModel = require('../models/user/user.model.server');
 const Chat = userSchema.getModel('chat');
 const _filter = {'password':0, '__v':0}; // mask out password and version when send back data to client.
-
+const friendshipModel = require('../models/friendship/friendship.model.server');
 // user list for debug
 Router.get('/list',function (req, res) {
+    const {userId} = req.cookies;
+    if(!userId){
+        console.log('user is not loggedin');
+        return res.json({code:1});
+    }
     // const type  = req.query.type;
     const { status } = req.query;
     // console.log(status);
@@ -21,7 +26,28 @@ Router.get('/list',function (req, res) {
     } else {
         UserModel.findUsersByStatus({status})
             .then(function(doc){
-                return res.json({code:0, data:doc});
+                return friendshipModel.findFriendsForUser(userId)
+                    .then(friends=>{
+                        // console.log(friends);
+                        let friendsIds = friends.map(f=>(f._id));
+                        console.log(friendsIds);
+                        let data = doc.map(user=>{
+                            // console.log(user._id);
+                            let u = null;
+                            friendsIds.forEach(id=>{
+                                console.log(id + " " + user._id);
+                                if(String(id) === String(user._id)){
+                                    u = Object.assign({},{isFriend: true}, user._doc);
+                                    console.log('find it!');
+                                    console.log(u);
+                                    return u;
+                                }
+                            });
+                            return u?u:user;
+                        });
+                        // console.log(doc);
+                        return res.json({code:0, data:data});
+                    });
             })
     }
 });

@@ -3,7 +3,7 @@ module.exports = function (app) {
 
     app.get('/api/company', findAllCompany);
     app.post('/api/company', createCompany);
-    app.put('api/company', updateCompany);
+    app.put('/api/company', updateCompany);
     app.get('/api/company/:companyName', findCompanyByName);
 
     const companyModel = require('../models/company/company.model.server');
@@ -12,6 +12,7 @@ module.exports = function (app) {
 
     function updateCompany(req, res) {
         const company = req.body;
+        console.log(company)
         companyModel.updateCompany(company)
             .then(
                 () => res.json({success: true})

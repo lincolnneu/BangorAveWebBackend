@@ -4,6 +4,7 @@ module.exports = function (app) {
     app.get('/api/company', findAllCompany);
     app.post('/api/company', createCompany);
     app.put('/api/company', updateCompany);
+    app.delete('/api/company/:companyName', deleteCompanyByName);
     app.get('/api/company/:companyName', findCompanyByName);
 
     const companyModel = require('../models/company/company.model.server');
@@ -48,6 +49,16 @@ module.exports = function (app) {
                     }
                 }
             )
+    }
+
+    function deleteCompanyByName(req, res) {
+        console.log("goes here.")
+        const companyName = req.params['companyName'];
+        companyModel
+          .deleteCompanyByName(companyName)
+          .then(
+          () => res.json({code: 0})
+        )
     }
 
 

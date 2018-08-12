@@ -12,7 +12,7 @@ module.exports = function (app) {
 
     function updateCompany(req, res) {
         const company = req.body;
-        console.log(company)
+        // console.log(company)
         companyModel.updateCompany(company)
             .then(
                 () => res.json({success: true})
@@ -33,10 +33,12 @@ module.exports = function (app) {
 
     function createCompany(req, res) {
         const company = req.body;
+        // console.log(company);
         companyModel
             .findCompanyByName(company.companyName)
             .then(
                 (find) => {
+                    // console.log(find);
                     if(find) {
                         res.json({code: 404, error: 'company name exists'})
                     } else {

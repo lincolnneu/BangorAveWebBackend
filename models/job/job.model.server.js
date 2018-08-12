@@ -26,6 +26,12 @@ function findJobsForCompany(companyId) {
         .exec();
 }
 
+function findJobByName(name) {
+    return jobModel.find({name: name})
+        .populate('company')
+        .exec();
+}
+
 function findJobsForHR(hrId) {
     return jobModel.find({hrId: hrId})
         .populate('company')
@@ -39,7 +45,8 @@ api = {
     deleteJobById: deleteJobById,
     updateJobById: updateJobById,
     findJobsForHR: findJobsForHR,
-    findJobsForCompany: findJobsForCompany
+    findJobsForCompany: findJobsForCompany,
+    findJobByName: findJobByName
 };
 
 module.exports = api;

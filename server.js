@@ -80,7 +80,8 @@ require('./services/job.service.server')(app);
 //company router
 require('./services/company.service.server')(app);
 //application
-require('./services/application.service.server')(app);
+var applicationService = require('./services/application.service.server');
+applicationService(app);
 
 server.listen(9093,function(){
     console.log('Node app start at port 9093');

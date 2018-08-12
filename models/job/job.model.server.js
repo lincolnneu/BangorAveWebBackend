@@ -38,6 +38,10 @@ function findJobsForHR(hrId) {
         .exec();
 }
 
+function findJobById(jobId){
+    return jobModel.findOne({_id: jobId});
+}
+
 
 api = {
     findAllJobs: findAllJobs,
@@ -46,6 +50,7 @@ api = {
     updateJobById: updateJobById,
     findJobsForHR: findJobsForHR,
     findJobsForCompany: findJobsForCompany,
+    findJobById: findJobById,
     findJobByName: findJobByName
 };
 

@@ -11,6 +11,7 @@ module.exports = function (app) {
 
     const jobModel = require('../models/job/job.model.server');
     const companyModel = require('../models/company/company.model.server');
+    const applicationModel = require('../models/application/application.model.server');
 
 
     function findJobByName(req, res) {
@@ -52,8 +53,37 @@ module.exports = function (app) {
     }
 
     function findAllJobs(req, res) {
-        jobModel.findAllJobs()
-            .then(job => res.json(job))
+        const {userId} = req.cookies;
+        let jobsApplied = null;
+        if(!userId){
+            console.log('user is not loggedin');
+            // return res.json({code:1});
+            jobModel.findAllJobs()
+                .then(jobs => res.json(jobs))
+        } else {
+            applicationModel
+                .findApplicationsForApplicant(userId)
+                .then(applications => {
+                    jobsApplied = applications.map(application => (application.job._id));
+                    jobModel.findAllJobs()
+                        .then(jobs => {
+                            let data = jobs.map(job => {
+                                let j = null;
+                                jobsApplied.forEach(id => {
+                                    if(String(id) === String(job._id)){
+                                        j = Object.assign({},{hasApplied: true}, job._doc);
+                                        // console.log(j);
+                                        return j;
+                                    }
+                                });
+                                return j?j:job
+
+                            });
+                            res.json(data);
+
+                        })
+                })
+        }
     }
 
     function deleteJob(req, res) {

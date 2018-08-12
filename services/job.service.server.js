@@ -7,9 +7,28 @@ module.exports = function (app) {
     app.put('/api/job', updateJobById);
     app.get('/api/job/company/:companyId', findJobsForCompany);
     app.get('/api/job/hr/:hrId', findJobsForHR);
+    app.get('/api/job/search/:jobName', findJobByName);
 
     const jobModel = require('../models/job/job.model.server');
     const companyModel = require('../models/company/company.model.server');
+
+
+    function findJobByName(req, res) {
+        const jobName = req.params['jobName'];
+
+        jobModel.findJobByName(jobName)
+            .then(
+                (job) => {
+                    if(job.length === 0) {
+                        res.json([])
+                    } else {
+                        res.json(job);
+                    }
+                }
+            )
+
+    }
+
 
     function createJob(req, res) {
         const job = req.body;

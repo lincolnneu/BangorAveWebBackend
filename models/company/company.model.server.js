@@ -21,6 +21,9 @@ function updateCompany(company) {
     return companyModel.findOneAndUpdate({companyName: companyName}, {$set: company})
 }
 
+function deleteCompanyByName(companyName) {
+    return companyModel.remove({companyName: companyName});
+}
 
 // function updateUser(user) {
 //     return userModel.update({username: user.username},
@@ -40,7 +43,8 @@ const api = {
     createCompany: createCompany,
     findCompanyByName: findCompanyByName,
     findAllCompany: findAllCompany,
-    updateCompany: updateCompany
+    updateCompany: updateCompany,
+    deleteCompanyByName : deleteCompanyByName
 };
 
 module.exports = api;

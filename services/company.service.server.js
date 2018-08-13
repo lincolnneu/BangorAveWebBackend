@@ -10,7 +10,6 @@ module.exports = function (app) {
     const companyModel = require('../models/company/company.model.server');
 
 
-
     function updateCompany(req, res) {
         const company = req.body;
         // console.log(company)
@@ -54,6 +53,9 @@ module.exports = function (app) {
     function deleteCompanyByName(req, res) {
         console.log("goes here.")
         const companyName = req.params['companyName'];
+
+
+
         companyModel
           .deleteCompanyByName(companyName)
           .then(

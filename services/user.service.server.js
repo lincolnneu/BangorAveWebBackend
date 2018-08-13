@@ -192,9 +192,7 @@ Router.delete('/deleteUser',function(req, res){
                                     }
                                     return res.json({code:0, data:{userId}});
                                 })
-
                         ))
-
                 ))
             ))
 });

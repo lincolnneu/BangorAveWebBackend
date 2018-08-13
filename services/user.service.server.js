@@ -16,7 +16,7 @@ Router.get('/list',function (req, res) {
     }
     // const type  = req.query.type;
     const { status } = req.query;
-    // console.log(status);
+    console.log(status);
     // User.remove({},function(e,d){}); // remove all user data
     if(status === 'admin' || status === 'representative'){
         UserModel.findAllUsers()
@@ -26,9 +26,10 @@ Router.get('/list',function (req, res) {
     } else {
         UserModel.findUsersByStatus({status})
             .then(function(doc){
+                console.log(doc);
                 return friendshipModel.findFriendsForUser(userId)
                     .then(friends=>{
-                        console.log(friends);
+                        // console.log(friends);
                         let friendsIds = friends.map(f=>(f._id));
                         // console.log(friendsIds);
                         let data = doc.map(user=>{

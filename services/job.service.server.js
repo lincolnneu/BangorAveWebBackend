@@ -88,10 +88,14 @@ module.exports = function (app) {
 
     function deleteJob(req, res) {
         const jobId = req.params['jobId'];
-        jobModel.deleteJobById(jobId)
-            .then(
-                () => res.json({code: 0})
-            )
+        return applicationModel
+            .deleteApplicationsForJob(jobId)
+            .then(()=>(
+                jobModel.deleteJobById(jobId)
+                    .then(
+                        () => res.json({code: 0})
+                    )
+            ))
     }
 
     function updateJobById(req, res) {

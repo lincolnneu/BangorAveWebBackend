@@ -41,6 +41,19 @@ function findApplicationsForHR(userId){
         .exec();
 }
 
+function findApplicationsForAdmin(){
+    return applicationModel
+        .find({})
+        .populate({
+            path:'job',
+            populate:{
+                path:'company'
+            }
+        })
+        .populate('applicant')
+        .exec();
+}
+
 function checkDuplicate(application){
     return applicationModel.findOne(application)
         .then(res => {
@@ -62,6 +75,10 @@ function checkDuplicate(application){
         } );
 }
 
+function deleteApplicationsForJob(jobId){
+    return applicationModel.remove({job: jobId})
+}
+
 function cancelApplicationForUser(userId){
     return applicationModel.remove({'$or': [{hrId: userId}, {applicant: userId}]})
 }
@@ -71,8 +88,10 @@ api = {
     cancelApplication: cancelApplication,
     findApplicationsForApplicant: findApplicationsForApplicant,
     findApplicationsForHR: findApplicationsForHR,
+    findApplicationsForAdmin: findApplicationsForAdmin,
     checkDuplicate: checkDuplicate,
-    cancelApplicationForUser: cancelApplicationForUser
+    cancelApplicationForUser: cancelApplicationForUser,
+    deleteApplicationsForJob: deleteApplicationsForJob
 };
 
 module.exports = api;

@@ -1,7 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const FRONTEND_URL = 'http://localhost:3000';
+// const FRONTEND_URL = 'http://localhost:3000';
+const FRONTEND_URL = 'https://bangor-ave-web.herokuapp.com';
 const models = require('./models/user/user.schema.server');
 const User = models.getModel('user');
 const Chat = models.getModel('chat');
@@ -11,10 +12,7 @@ const mongoose = require('mongoose');
 
 let DB_URL = 'mongodb://127.0.0.1:27017/team6'; // for local
 if(process.env.MLAB_USERNAME_WEBDEV) { // check if running remotely
-    var username = process.env.MLAB_USERNAME_WEBDEV; // get from environment
-    var password = process.env.MLAB_PASSWORD_WEBDEV;
-    DB_URL = 'mongodb://' + username + ':' + password;
-    DB_URL += '@ds237641.mlab.com:37641/heroku_bq69054b'; // user yours
+    DB_URL = process.env.MONGODB_URI;
 }
 
 
@@ -83,6 +81,8 @@ require('./services/company.service.server')(app);
 var applicationService = require('./services/application.service.server');
 applicationService(app);
 
-server.listen(9093,function(){
-    console.log('Node app start at port 9093');
+var port = process.env.PORT || 9093;
+
+server.listen(port,function(){
+    console.log('Node app start at port ' + port);
 });

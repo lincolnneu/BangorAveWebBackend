@@ -200,6 +200,18 @@ Router.get('/info', function(req,res){
     // code 0 represents success. 1 represents fail
 });
 
+// for log out
+Router.delete('/logout',function(req,res){
+    const {userId} = req.cookies;
+    // without cookie?
+    if(!userId){
+        console.log('user is not loggedin');
+        return res.json({code:1});
+    }
+    res.clearCookie('userId');
+    return res.json({code:0, data:userId});
+});
+
 //----------------------------------chat--------------------------------------------------------------------
 
 Router.get('/getmsglist', function (req, res) {

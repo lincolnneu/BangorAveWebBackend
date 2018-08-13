@@ -13,6 +13,7 @@ function makeFriendship(friendship){
 }
 
 function breakFriendship(friendship){
+    // console.log('breaking friendship');
     // console.log(friendship);
     return friendshipModel.deleteOne(friendship);
 }
@@ -37,6 +38,15 @@ function findFriendsForUser(userId){
             return friends;
         });
 
+}
+
+function findAllFriendships(){
+    console.log('finding all friendship...');
+    return friendshipModel
+        .find({})
+        .populate('friend')
+        .populate('me')
+        .exec();
 }
 
 function checkDuplicate(friendship){
@@ -65,7 +75,8 @@ api = {
     breakFriendship: breakFriendship,
     findFriendshipsForUser: findFriendshipsForUser,
     findFriendsForUser: findFriendsForUser,
-    checkDuplicate: checkDuplicate
+    checkDuplicate: checkDuplicate,
+    findAllFriendships: findAllFriendships
 };
 
 module.exports = api;

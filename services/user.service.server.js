@@ -28,7 +28,7 @@ Router.get('/list',function (req, res) {
             .then(function(doc){
                 return friendshipModel.findFriendsForUser(userId)
                     .then(friends=>{
-                        // console.log(friends);
+                        console.log(friends);
                         let friendsIds = friends.map(f=>(f._id));
                         // console.log(friendsIds);
                         let data = doc.map(user=>{

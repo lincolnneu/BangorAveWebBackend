@@ -32,7 +32,7 @@ module.exports = function(app){
         userModel.findUserById({_id:userId},_filter)
             .then(user=>{
                 let status = user.status;
-                console.log(user);
+                // console.log(user);
                 if(status !== 'admin'){
                     return res.json({code:1});
                 } else {

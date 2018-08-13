@@ -62,12 +62,17 @@ function checkDuplicate(application){
         } );
 }
 
+function cancelApplicationForUser(userId){
+    return applicationModel.remove({'$or': [{hrId: userId}, {applicant: userId}]})
+}
+
 api = {
     makeApplication: makeApplication,
     cancelApplication: cancelApplication,
     findApplicationsForApplicant: findApplicationsForApplicant,
     findApplicationsForHR: findApplicationsForHR,
-    checkDuplicate: checkDuplicate
+    checkDuplicate: checkDuplicate,
+    cancelApplicationForUser: cancelApplicationForUser
 };
 
 module.exports = api;

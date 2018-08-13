@@ -71,13 +71,20 @@ function checkDuplicate(friendship){
         } );
 }
 
+function breakFriendshipForUser(userId){
+    return friendshipModel.remove({'$or': [{me: userId}, {friend: userId}]})
+
+}
+
+
 api = {
     makeFriendship: makeFriendship,
     breakFriendship: breakFriendship,
     findFriendshipsForUser: findFriendshipsForUser,
     findFriendsForUser: findFriendsForUser,
     checkDuplicate: checkDuplicate,
-    findAllFriendships: findAllFriendships
+    findAllFriendships: findAllFriendships,
+    breakFriendshipForUser: breakFriendshipForUser
 };
 
 module.exports = api;

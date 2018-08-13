@@ -7,6 +7,9 @@ const UserModel = require('../models/user/user.model.server');
 const Chat = userSchema.getModel('chat');
 const _filter = {'password':0, '__v':0}; // mask out password and version when send back data to client.
 const friendshipModel = require('../models/friendship/friendship.model.server');
+const applicationModel = require('../models/application/application.model.server');
+const jobModel = require('../models/job/job.model.server');
+// const companyModel = require('../models/company/company.model.server');
 // user list for debug
 Router.get('/list',function (req, res) {
     const {userId} = req.cookies;
@@ -169,18 +172,31 @@ Router.post('/createUser',function(req, res){
 
 Router.delete('/deleteUser',function(req, res){
     // console.log(req.body);
-    const userId = req.body;
+    const userId = req.body.userId;
 
     // console.log(userId);
     // Since create cannot get user id, we switch to save.
-    return UserModel.findUserByIdAndDelete(userId.userId)
-        .then(function(d){
-            if(!d){
-                return res.json({code:1, msg:'sth wrong in backend..'});
-            }
-            return res.json({code:0, data:userId});
-        });
 
+    return friendshipModel
+        .breakFriendshipForUser(userId)
+        .then(()=>(applicationModel
+            .cancelApplicationForUser(userId)
+                .then(()=>(
+                    jobModel
+                        .deleteJobForUser(userId)
+                        .then(()=>(
+                            UserModel.findUserByIdAndDelete(userId)
+                                .then(function(d){
+                                    if(!d){
+                                        return res.json({code:1, msg:'sth wrong in backend..'});
+                                    }
+                                    return res.json({code:0, data:{userId}});
+                                })
+
+                        ))
+
+                ))
+            ))
 });
 
 

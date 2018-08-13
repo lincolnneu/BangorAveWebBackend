@@ -32,6 +32,7 @@ function findFriendsForUser(userId){
         .populate('friend')
         .exec()
         .then(function(friendships){
+            console.log(friendships);
             let friends = friendships.map(f=>{
                 return f.friend;
             });

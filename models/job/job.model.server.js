@@ -43,6 +43,11 @@ function findJobById(jobId){
 }
 
 
+function deleteJobForUser(userId){
+    return jobModel.remove({hrId: userId})
+}
+
+
 api = {
     findAllJobs: findAllJobs,
     createJob: createJob,
@@ -51,7 +56,8 @@ api = {
     findJobsForHR: findJobsForHR,
     findJobsForCompany: findJobsForCompany,
     findJobById: findJobById,
-    findJobByName: findJobByName
+    findJobByName: findJobByName,
+    deleteJobForUser: deleteJobForUser
 };
 
 module.exports = api;

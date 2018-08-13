@@ -1,8 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const FRONTEND_URL = 'http://localhost:3000';
-// const FRONTEND_URL = 'https://bangor-ave-web.herokuapp.com';
+// const FRONTEND_URL = 'http://localhost:3000';
+const FRONTEND_URL = 'https://bangor-ave-web.herokuapp.com';
 const models = require('./models/user/user.schema.server');
 const User = models.getModel('user');
 const Chat = models.getModel('chat');

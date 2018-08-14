@@ -1,6 +1,5 @@
 # BangorAveWeb
 
-To run the server, first have your local mongodb on, then ```nodemon ./server.js```.
 
 To run locally, in backend project folder, ```./server.js```, replace the following line:
 
@@ -28,4 +27,18 @@ to
 export const HOST = 'http://localhost:9093';
 // export const HOST = 'https://webdev-2018-team6-backend.herokuapp.com';
 ```
+
+To run the server, first have your local mongodb on, then ```nodemon ./server.js```.
+
+To set up your local database, please create a database called ```team6```, then create the following collections:  
+```applications```  
+```chats```  
+```company```  
+```friendships```  
+```jobs```  
+```users```  
+
+Special thanks to USAJOBS, NewsAPI and Google Maps for sharing their high quality APIs!
+
+-Team 6 
 

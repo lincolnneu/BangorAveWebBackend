@@ -141,7 +141,7 @@ module.exports = function(app){
         }
 
         const friendship = req.body.friendship;
-        console.log(friendship);
+        // console.log(friendship);
         let friendship1 = {
             me: friendship.me._id,
             friend: friendship.friend._id
